@@ -13,11 +13,46 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::factory()->create([
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
+            'role' => 'admin',
+        ]);
+
+        User::factory()->create([
+            'name' => 'Manager User',
+            'email' => 'manager@example.com',
+            'role' => 'manager',
+            'department' => 'IT',
+        ]);
 
         User::factory()->create([
             'name' => 'Test User',
-            'email' => 'test@example.com',
+            'email' => 'user@example.com',
+            'role' => 'user',
+            'department' => 'IT',
+            'years_of_experience' => 5,
         ]);
+
+        User::factory(100)->create();
+
+        $admin = User::where('role', 'admin')->first();
+
+        // Create tasks with rules
+        \App\Models\Task::factory(20)->create(['created_by' => $admin->id])->each(function ($task) {
+            \App\Models\TaskRule::factory()->create([
+                'task_id' => $task->id,
+                'field' => 'department',
+                'operator' => '=',
+                'value' => 'IT',
+            ]);
+            
+            \App\Models\TaskRule::factory()->create([
+                'task_id' => $task->id,
+                'field' => 'years_of_experience',
+                'operator' => '>=',
+                'value' => '2',
+            ]);
+        });
     }
 }

@@ -17,8 +17,21 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('role', ['admin', 'manager', 'user'])->default('user');
+            $table->enum('department', ['Finance', 'HR', 'IT', 'Operation'])->nullable();
+            $table->tinyInteger('years_of_experience')->unsigned()->default(0);
+            $table->string('location')->nullable();
+            $table->integer('active_task_count')->unsigned()->default(0);
             $table->rememberToken();
             $table->timestamps();
+
+            // Indexes for assignment engine
+            $table->index('department');
+            $table->index('years_of_experience');
+            $table->index('location');
+            $table->index('active_task_count');
+            $table->index('role');
+            $table->index(['department', 'years_of_experience', 'active_task_count'], 'idx_users_dept_exp_active');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

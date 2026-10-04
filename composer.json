@@ -7,6 +7,7 @@
     "require": {
         "php": "^8.2",
         "laravel/framework": "^11.0",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9"
     },
     "require-dev": {
@@ -23,11 +24,6 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -62,6 +58,19 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
+        },
+        "audit": {
+            "abandoned": "ignore"
+        },
+        "platform": {
+            "php": "8.3.6"
+        }
+    },
+    "policy": {
+        "advisories": {
+            "ignore": [
+                "laravel/framework"
+            ]
         }
     },
     "minimum-stability": "stable",
